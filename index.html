@@ -2,15 +2,72 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>Form Tây Y</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tây Y Formula</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h1 { color: #2c3e50; }
+    label { display: block; margin-top: 15px; font-weight: bold; }
+    input, textarea, select { width: 100%; padding: 8px; margin-top: 5px; }
+    .note { font-size: 0.9em; color: #666; }
+    .card { border: 1px solid #ccc; padding: 15px; margin-top: 20px; border-radius: 8px; }
+    .result { background: #f6f6f6; padding: 10px; margin-top: 10px; border-radius: 6px; white-space: pre-wrap; }
+  </style>
 </head>
 <body>
-  <h1>📋 Form khám bệnh Tây Y</h1>
-  <form>
-    <label>Họ tên bệnh nhân: <input type="text" name="hoten"></label><br><br>
-    <label>Triệu chứng chính: <textarea name="trieuchung"></textarea></label><br><br>
-    <label>Mức độ đau (0-10): <input type="range" min="0" max="10" name="vas"></label><br><br>
-    <button type="submit">Gửi thông tin</button>
-  </form>
+  <h1>⚕️ Tổng Hợp Triệu Chứng (Tây Y)</h1>
+
+  <div class="card">
+    <label>Họ tên bệnh nhân:</label>
+    <input type="text" id="hoten">
+
+    <label>Triệu chứng:</label>
+    <textarea id="trieuchung" rows="5" placeholder="VD: ho khan, sốt, đau họng..."></textarea>
+
+    <label>Chỉ số sinh tố (Tùy chọn):</label>
+    <input type="text" id="sinhly" placeholder="VD: Huyết áp 120/80, M: 80l/ph...">
+
+    <label>Mức độ đau (VAS):</label>
+    <input type="range" id="vas" min="0" max="10">
+    <span id="vasDisplay">0</span>
+
+    <button onclick="generateFormula()">Tổng hợp chỉ định</button>
+  </div>
+
+  <div class="card">
+    <h3>Kết quả đề xuất:</h3>
+    <div id="result" class="result">...</div>
+  </div>
+
+  <script>
+    const vasInput = document.getElementById('vas');
+    const vasDisplay = document.getElementById('vasDisplay');
+
+    vasInput.addEventListener('input', () => {
+      vasDisplay.textContent = vasInput.value;
+    });
+
+    function generateFormula() {
+      const hoten = document.getElementById('hoten').value.trim();
+      const trieuchung = document.getElementById('trieuchung').value.trim();
+      const sinhly = document.getElementById('sinhly').value.trim();
+      const vas = document.getElementById('vas').value;
+
+      let output = `Họ tên: ${hoten}\n`;
+      output += `Triệu chứng: ${trieuchung}\n`;
+      output += `Chỉ số sinh lý: ${sinhly}\n`;
+      output += `Mức độ đau (VAS): ${vas}/10\n\n`;
+
+      output += `✨ Đề xuất ban đầu:\n`;
+      if (trieuchung.includes("ho") && trieuchung.includes("sốt")) {
+        output += "- Nghi viêm hô hấp trên do virus.\n";
+        output += "- Xét nghiệm: CRP, CBC, X-quang ngực (nếu cần).\n";
+      } else {
+        output += "- Cần thêm thông tin để gợi ý chẩn đoán.\n";
+      }
+
+      document.getElementById('result').textContent = output;
+    }
+  </script>
 </body>
 </html>
